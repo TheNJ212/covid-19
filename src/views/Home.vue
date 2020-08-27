@@ -1,18 +1,103 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="main"  style="width: 65%; height: 500px; "></div>
   </div>
 </template>
 
+<style scoped>
+</style>
+
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+// import HelloWorld from '@/components/HelloWorld.vue'
+// var $ = require('jquery')
+const ECharts = require('echarts/dist/echarts-en.min.js')
+const axios = require('axios')
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    // HelloWorld
+  },
+  mounted () {
+    var myChart = ECharts.init(document.getElementById('main'))
+    var myGeoJSONPath = 'custom.geo.json'
+    myChart.showLoading()
+    axios.get(myGeoJSONPath).then(world => {
+      myChart.hideLoading()
+
+      ECharts.registerMap('World', world.data)
+      const option = {
+        title: {
+          text: 'World Covid-19 Outbrake',
+          subtext: 'Data from www.census.gov',
+          sublink: 'http://www.census.gov/popest/data/datasets.html',
+          left: 'right'
+        },
+        tooltip: {
+          trigger: 'item',
+          showDelay: 0,
+          transitionDuration: 0.2,
+          formatter: function (params) {
+            console.log(params)
+            var value = (params.value + '').split('.')
+            value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+            return params.name + '<br/>' + 'Cases' + ': ' + value
+          }
+        },
+        visualMap: {
+          left: 'right',
+          min: 0,
+          max: 10000000,
+          inRange: {
+            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+          },
+          text: ['High', 'Low'],
+          calculable: true
+        },
+        toolbox: {
+          show: true,
+          // orient: 'vertical',
+          left: 'left',
+          top: 'top',
+          feature: {
+            // dataView: { readOnly: false },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        series: [
+          {
+            name: 'USA PopEstimates',
+            type: 'map',
+            roam: true,
+            map: 'World',
+            emphasis: {
+              label: {
+                show: true
+              }
+            },
+            data: [
+              { name: 'Serbia', value: 4822023 }
+            ]
+          }
+        ]
+      }
+
+      myChart.setOption(option)
+      window.onresize = function () {
+        myChart.resize()
+      }
+      var vm = this
+      myChart.on('click', function (params) {
+        alert(params.name.toLowerCase())
+        vm.$router.push('/' + params.name)
+      })
+
+      if (option && typeof option === 'object') {
+        myChart.setOption(option, true)
+      }
+    })
   }
 }
 </script>
