@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <div id="main"  style="width: 65%; height: 500px;"></div>
+    <vs-row vs-justify="center">
+  <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
+    <vs-card>
+    <div id="main"  style="width: 100%; height: 500px; margin: 0 auto; background-color: #FFF; "></div>
+    </vs-card>
+        </vs-col>
+</vs-row>
   </div>
 </template>
 
@@ -25,7 +31,7 @@ export default {
       ECharts.registerMap('World', world.data)
       const option = {
         title: {
-          text: 'World Covid-19 Outbrake',
+          text: 'World Outbrake Covid-19',
           subtext: 'Data from www.census.gov',
           sublink: 'http://www.census.gov/popest/data/datasets.html',
           left: 'right'

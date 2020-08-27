@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Navigacija></Navigacija>
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>
@@ -11,12 +8,18 @@
 </template>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #fdfdfd;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat';
 }
 
 #nav {
@@ -32,3 +35,13 @@
   color: #42b983;
 }
 </style>
+
+<script>
+import Navigacija from '@/components/Navigacija.vue'
+
+export default {
+  components: {
+    Navigacija
+  }
+}
+</script>>
