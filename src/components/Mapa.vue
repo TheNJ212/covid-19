@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <vs-row vs-justify="center">
-  <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
+  <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" vs-xs="12" vs-sm="10" style="padding:0 8px">
     <vs-card>
-    <div id="main"  style="width: 100%; height: 500px; margin: 0 auto; background-color: #FFF; "></div>
+    <div id="main"  style="width: 100%; height: 500px; margin: 0 auto; background-color: #FFF; padding:0 8px "></div>
     </vs-card>
         </vs-col>
 </vs-row>
@@ -32,8 +32,8 @@ export default {
       const option = {
         title: {
           text: 'World Outbrake Covid-19',
-          subtext: 'Data from www.census.gov',
-          sublink: 'http://www.census.gov/popest/data/datasets.html',
+          subtext: 'Data from www.who.org',
+          // sublink: 'http://www.census.gov/popest/data/datasets.html',
           left: 'right'
         },
         tooltip: {
@@ -41,7 +41,6 @@ export default {
           showDelay: 0,
           transitionDuration: 0.2,
           formatter: function (params) {
-            console.log(params)
             var value = (params.value + '').split('.')
             value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
             return params.name + '<br/>' + 'Cases' + ': ' + value
@@ -70,7 +69,7 @@ export default {
         },
         series: [
           {
-            name: 'USA PopEstimates',
+            name: 'Count',
             type: 'map',
             roam: true,
             map: 'World',
