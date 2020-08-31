@@ -2,7 +2,7 @@
 <template>
   <div class="centerx">
     <vs-row vs-align="flex-start"
-  vs-type="flex" vs-justify="center"><vs-col vs-w="6" vs-sm="12">
+  vs-type="flex" vs-justify="center"><vs-col vs-w="8" vs-sm="12">
     <vs-navbar
       v-model="indexActive"
       :color="colorx"
@@ -56,5 +56,8 @@ export default {
 .centerx{
   margin-bottom:30px;
   background-color: rgb(255, 71, 87);
+}
+a:hover {
+  color: white;
 }
 </style>

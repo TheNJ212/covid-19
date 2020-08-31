@@ -1,9 +1,9 @@
 <template>
-  <div class="home">
+  <div class="mapa">
     <vs-row vs-justify="center">
-  <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" vs-xs="12" vs-sm="10" style="padding:0 8px">
+  <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12" vs-sm="10" style="padding:0 8px">
     <vs-card>
-    <div id="main"  style="width: 100%; height: 500px; margin: 0 auto; background-color: #FFF; padding:0 8px "></div>
+    <div id="main"  style="width: 100%; height: 650px; margin: 0 auto; background-color: #FFF; padding:0 8px "></div>
     </vs-card>
         </vs-col>
 </vs-row>
@@ -20,6 +20,13 @@ const axios = require('axios')
 export default {
   name: 'Mapa',
   components: {
+  },
+  computed: {
+    countriesData: function () {
+      const podaci = this.$parent.statsPerCountry
+      console.log(podaci)
+      return podaci
+    }
   },
   mounted () {
     var myChart = ECharts.init(document.getElementById('main'))
@@ -41,6 +48,7 @@ export default {
           showDelay: 0,
           transitionDuration: 0.2,
           formatter: function (params) {
+            console.log(params)
             var value = (params.value + '').split('.')
             value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
             return params.name + '<br/>' + 'Cases' + ': ' + value

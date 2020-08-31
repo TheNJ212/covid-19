@@ -38,10 +38,25 @@ h1, h2, h3, h4, h5, h6 {
 
 <script>
 import Navigacija from '@/components/Navigacija.vue'
+import axios from 'axios'
 
 export default {
   components: {
     Navigacija
+  },
+  data: function () {
+    return {
+      globalStats: {},
+      statsPerCountry: {}
+    }
+  },
+  created () {
+    axios.get('https://disease.sh/v3/covid-19/all').then(resp => {
+      this.globalStats = resp.data
+    })
+    axios.get('https://disease.sh/v3/covid-19/countries').then(resp => {
+      this.statsPerCountry = resp.data
+    })
   }
 }
 </script>>
