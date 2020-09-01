@@ -1,9 +1,17 @@
 <template>
   <div id="app">
+    <div class="content">
     <Navigacija></Navigacija>
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>
+    </div>
+        <vs-row vs-justify="center">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-sm="12" style="padding:0 8px">
+        <hr>
+    <footer class="text-muted py-3" style="font-size: 0.8em">Nikola Jovičić NRT-6/17, VIŠER 2020.</footer>
+      </vs-col>
+    </vs-row>
   </div>
 </template>
 
@@ -16,10 +24,15 @@
   text-align: center;
   color: #2c3e50;
   background-color: #fdfdfd;
+
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6,footer {
     font-family: 'Montserrat';
+}
+
+.content{
+  min-height: calc(100vh - 90px);
 }
 
 #nav {

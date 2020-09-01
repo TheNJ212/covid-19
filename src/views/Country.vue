@@ -58,7 +58,7 @@
         </vs-row>
       </vs-col>
     </vs-row>
-    <vs-row vs-justify="center" style="my-30px">
+    <vs-row vs-justify="center" style="my-3">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6"  style="padding:0 8px" vs-sm="12">
