@@ -24,7 +24,6 @@ export default {
   computed: {
     countriesData: function () {
       const podaci = this.$parent.statsPerCountry
-      console.log(podaci)
       return podaci
     }
   },
@@ -39,8 +38,8 @@ export default {
       const option = {
         title: {
           text: 'World Outbrake Covid-19',
-          subtext: 'Data from www.who.org',
-          // sublink: 'http://www.census.gov/popest/data/datasets.html',
+          subtext: 'Data from disease.sh',
+          // sublink: '/#/countries',
           left: 'right'
         },
         tooltip: {
@@ -48,7 +47,6 @@ export default {
           showDelay: 0,
           transitionDuration: 0.2,
           formatter: function (params) {
-            console.log(params)
             var value = (params.value + '').split('.')
             value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
             return params.name + '<br/>' + 'Cases' + ': ' + value
@@ -97,11 +95,11 @@ export default {
       window.onresize = function () {
         myChart.resize()
       }
-      var vm = this
-      myChart.on('click', function (params) {
-        alert(params.name.toLowerCase())
-        vm.$router.push('/' + params.name)
-      })
+      // var vm = this
+      // myChart.on('click', function (params) {
+      //   alert(params.name.toLowerCase())
+      //   vm.$router.push('/countries/' + params.name)
+      // })
 
       if (option && typeof option === 'object') {
         myChart.setOption(option, true)

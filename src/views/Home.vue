@@ -6,7 +6,7 @@
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3"  style="padding:0 8px" vs-sm="12">
             <vs-card>
               <div slot="header">
-                <h3 >Total Cases</h3>
+                <h3>Total Cases</h3>
               </div>
               <div>
                 <h2 style="color:#5b3cc4">{{$parent.globalStats.cases | zarezi}}</h2>
@@ -20,7 +20,7 @@
                 <h3>Active Cases</h3>
               </div>
               <div>
-                <h2 style="color:rgb(255, 130, 0)">{{$parent.globalStats.active | zarezi}}</h2>
+                <h2 style="color:rgb(255, 130, 0);">{{$parent.globalStats.active | zarezi}}</h2><h6> / {{activePerc}}%</h6>
               </div>
               <div slot="footer"></div>
             </vs-card>
@@ -31,7 +31,7 @@
                 <h3>Total Deaths</h3>
               </div>
               <div>
-                <h2 style="color:rgb(242, 19, 93)">{{$parent.globalStats.deaths | zarezi}}</h2>
+                <h2 style="color:rgb(242, 19, 93)">{{$parent.globalStats.deaths | zarezi}}</h2><h6> / {{deathsPerc}}%</h6>
               </div>
               <div slot="footer"></div>
             </vs-card>
@@ -42,7 +42,7 @@
                 <h3>Total Recovered</h3>
               </div>
               <div>
-                <h2 style="color:rgb(23, 201, 100)">{{$parent.globalStats.recovered | zarezi}}</h2>
+                <h2 style="color:rgb(23, 201, 100)">{{$parent.globalStats.recovered | zarezi}}</h2><h6> / {{recoveredPerc}}%</h6>
               </div>
               <div slot="footer"></div>
             </vs-card>
@@ -68,6 +68,17 @@ export default {
   components: {
     Mapa, GrafikGlobal
   },
+  computed: {
+    activePerc: function () {
+      return (this.$parent.globalStats.active / this.$parent.globalStats.cases * 100).toFixed(2)
+    },
+    deathsPerc: function () {
+      return (this.$parent.globalStats.deaths / this.$parent.globalStats.cases * 100).toFixed(2)
+    },
+    recoveredPerc: function () {
+      return (this.$parent.globalStats.recovered / this.$parent.globalStats.cases * 100).toFixed(2)
+    }
+  },
   filters: {
     zarezi: function (value) {
       value += ''
@@ -76,3 +87,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+h2,h6 {
+  display: inline;
+}
+</style>

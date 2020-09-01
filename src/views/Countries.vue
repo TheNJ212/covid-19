@@ -1,46 +1,93 @@
 <template lang="html">
   <div>
     <vs-row vs-justify="center">
-            <vs-col  vs-w="8" vs-xs="12" vs-sm="10" style="padding:0 8px">
-        <h3>Coronavirus outbreak by country</h3>
-        <p>
-          <b> {{$parent.globalStats.todayCases | zarezi}} new confirmed cases</b> and <b>{{$parent.globalStats.todayDeaths | zarezi}} new deaths</b> are reported <b>today</b> so far globally. 2019 Novel <b>Coronavirus</b> has affected <b>215 countries and territories</b> and there are <b>{{$parent.globalStats.cases | zarezi}} total confirmed</b> cases, 852,586 total deaths, and 17,597,649 total recoveries from COVID-19 worldwide. Below is the list of countries with coronavirus live statistics for active cases, new cases and deaths, total confirmed cases and deaths, and recoveries.
+      <vs-col vs-w="8" vs-xs="12" vs-sm="10" style="padding:0 8px">
+        <h3 style="text-align: left">Coronavirus outbreak by country</h3>
+        <p style="text-align: left">
+          <b>
+            {{ $parent.globalStats.todayCases | zarezi }} new confirmed cases</b
+          >
+          and
+          <b>{{ $parent.globalStats.todayDeaths | zarezi }} new deaths</b> are
+          reported <b>today</b> so far globally. 2019 Novel
+          <b>Coronavirus</b> has affected
+          <b>215 countries and territories</b> and there are
+          <b>{{ $parent.globalStats.cases | zarezi }} total confirmed</b> cases,
+          <b>{{ $parent.globalStats.deaths | zarezi }} total deaths</b>, and
+          <b>{{ $parent.globalStats.recovered | zarezi }} total recoveries</b>
+          from <b>COVID-19</b> worldwide. Below is the list of
+          <b>countries with coronavirus live statistics</b> for active cases,
+          new cases and deaths, total confirmed cases and deaths, and
+          recoveries.
         </p>
-        </vs-col>
-      <vs-col  vs-w="8" vs-xs="12" vs-sm="10" style="padding:0 8px">
+      </vs-col>
+      <vs-col vs-w="8" vs-xs="12" vs-sm="10" style="padding:0 8px">
         <vs-card>
           <div>
-             <b-col lg="6" class="my-1">
-        <b-form-group
-          label="Filter"
-          label-cols-sm="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="filterInput"
-          class="mb-0"
-        >
-          <b-input-group size="sm">
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Type to Search"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-            <b-table hover :items="items" :fields="fields" :head-variant="headVariant" :bordered='true' :filter="filter" :busy="isBusy">
-                    <template v-slot:table-busy>
-        <div class="text-center text-danger my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </template>
+            <b-col lg="6" class="my-1">
+              <b-form-group
+                label="Filter"
+                label-cols-sm="3"
+                label-align-sm="right"
+                label-size="sm"
+                label-for="filterInput"
+                class="mb-0"
+              >
+                <b-input-group size="sm">
+                  <b-form-input
+                    v-model="filter"
+                    type="search"
+                    id="filterInput"
+                    placeholder="Type to Search"
+                  ></b-form-input>
+                  <b-input-group-append>
+                    <b-button :disabled="!filter" @click="filter = ''"
+                      >Clear</b-button
+                    >
+                  </b-input-group-append>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+            <b-table
+              hover
+              :items="items"
+              :fields="fields"
+              :head-variant="headVariant"
+              :bordered="true"
+              :filter="filter"
+              :busy="isBusy"
+            >
+              <template v-slot:table-busy>
+                <div class="text-center text-danger my-2">
+                  <b-spinner class="align-middle"></b-spinner>
+                  <strong>Loading...</strong>
+                </div>
+              </template>
               <template v-slot:cell(country)="data">
-                 <div><img :src="data.item.countryInfo.flag"> <span>{{data.item.country}}</span></div>
+                <div>
+                  <router-link :to="`/countries/${data.value}`">
+                  <img :src="data.item.countryInfo.flag" />
+                  <span> {{ data.item.country }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template v-slot:cell(active)="data">
+                  {{data.value | zarezi}}
+              </template>
+              <template v-slot:cell(todayCases)="data">
+                  {{data.value | zarezi}}
+              </template>
+              <template v-slot:cell(cases)="data">
+                  {{data.value | zarezi}}
+              </template>
+              <template v-slot:cell(todayDeaths)="data">
+                  {{data.value | zarezi}}
+              </template>
+              <template v-slot:cell(deaths)="data">
+                  {{data.value | zarezi}}
+              </template>
+              <template v-slot:cell(recovered)="data">
+                  {{data.value | zarezi}}
               </template>
             </b-table>
           </div>
@@ -62,37 +109,44 @@ export default {
         {
           key: 'country',
           label: 'Country/Territory',
-          sortable: true
+          sortable: true,
+          tdClass: 'levo'
         },
         {
           key: 'active',
           label: 'Active Cases',
-          sortable: true
+          sortable: true,
+          tdClass: 'desno'
         },
         {
           key: 'todayCases',
           label: 'New Cases',
-          sortable: true
+          sortable: true,
+          tdClass: 'desno'
         },
         {
           key: 'cases',
           label: 'Total Cases',
-          sortable: true
+          sortable: true,
+          tdClass: 'desno'
         },
         {
           key: 'todayDeaths',
           label: 'New Deaths',
-          sortable: true
+          sortable: true,
+          tdClass: 'desno'
         },
         {
           key: 'deaths',
           label: 'Total Deaths',
-          sortable: true
+          sortable: true,
+          tdClass: 'desno'
         },
         {
           key: 'recovered',
           label: 'Total Recovered',
-          sortable: true
+          sortable: true,
+          tdClass: 'desno'
         }
       ],
       items: [],
@@ -123,11 +177,20 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
 img {
   max-height: 14px;
+}
+</style>
+
+<style>
+.levo {
+  text-align: left;
+}
+
+.desno {
+  text-align: right;
 }
 </style>

@@ -1,0 +1,154 @@
+<template>
+<div class="country">
+  <vs-row vs-justify="center">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" style="padding:0 8px">
+     <vs-card>
+        <h1>{{stats.country}}</h1>
+      <img :src="stats.countryInfo.flag" :alt="stats.country">
+     </vs-card>
+           </vs-col>
+    </vs-row>
+    <vs-row vs-justify="center">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+              <div slot="header">
+                <h3>Total Cases</h3>
+              </div>
+              <div>
+                <h2 style="color:#5b3cc4">{{stats.cases | zarezi}}</h2>
+              </div>
+              <div slot="footer"></div>
+            </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+              <div slot="header">
+                <h3>Active Cases</h3>
+              </div>
+              <div>
+                <h2 style="color:rgb(255, 130, 0);">{{stats.active | zarezi}}</h2><h6> / {{activePerc}}%</h6>
+              </div>
+              <div slot="footer"></div>
+            </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+              <div slot="header">
+                <h3>Total Deaths</h3>
+              </div>
+              <div>
+                <h2 style="color:rgb(242, 19, 93)">{{stats.deaths | zarezi}}</h2><h6> / {{deathsPerc}}%</h6>
+              </div>
+              <div slot="footer"></div>
+            </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+              <div slot="header">
+                <h3>Total Recovered</h3>
+              </div>
+              <div>
+                <h2 style="color:rgb(23, 201, 100)">{{stats.recovered | zarezi}}</h2><h6> / {{recoveredPerc}}%</h6>
+              </div>
+              <div slot="footer"></div>
+            </vs-card>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
+    <vs-row vs-justify="center" style="my-30px">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+              <div slot="header">
+                <h4>Today's New Confirmed Cases</h4>
+              </div>
+              <div>
+                <h2 style="color:#5b3cc4">{{stats.todayCases | zarezi}}   </h2>
+                <h6 class="dangerLight"><b-icon-arrow-up font-scale='1.8'></b-icon-arrow-up>{{todayActivePerc}}%</h6>
+                <p class="text-muted mt-2">Number of new cases / Ratio between new cases and total number of cases</p>
+              </div>
+              <div slot="footer"></div>
+            </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+              <div slot="header">
+                <h3>Today's Death Toll</h3>
+              </div>
+              <div>
+                <h2 style="color:rgb(242, 19, 93)">{{stats.todayDeaths | zarezi}}   </h2>
+                <h6 class="dangerLight"><b-icon-arrow-up font-scale='1.8'></b-icon-arrow-up>{{todayDeathsPerc}}%</h6>
+                <p class="text-muted mt-2">Number of new deaths / Ratio between new deaths and total number of deaths</p>
+              </div>
+              <div slot="footer"></div>
+            </vs-card>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
+</div>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data: function () {
+    return {
+      stats: {},
+      statsPerDay: {}
+    }
+  },
+  created: function () {
+    var vm = this
+    axios.get('https://disease.sh/v3/covid-19/countries/' + this.$route.params.country).then(resp => {
+      this.stats = resp.data
+      console.log(resp.data)
+    }).catch(function (error) {
+      if (error !== undefined) {
+        vm.$router.push('/404')
+      }
+    })
+    axios.get('https://disease.sh/v3/covid-19/historical/' + this.$route.params.country + '?lastdays=all').then(resp => {
+      this.statsPerDay = resp.data
+      console.log(resp.data)
+    })
+  },
+  computed: {
+    activePerc: function () {
+      return (this.stats.active / this.stats.cases * 100).toFixed(2)
+    },
+    deathsPerc: function () {
+      return (this.stats.deaths / this.stats.cases * 100).toFixed(2)
+    },
+    recoveredPerc: function () {
+      return (this.stats.recovered / this.stats.cases * 100).toFixed(2)
+    },
+    todayDeathsPerc: function () {
+      return (this.stats.todayDeaths / this.stats.deaths * 100).toFixed(2)
+    },
+    todayActivePerc: function () {
+      return (this.stats.todayCases / this.stats.cases * 100).toFixed(2)
+    }
+  },
+  filters: {
+    zarezi: function (value) {
+      value += ''
+      return value.replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+    }
+  }
+}
+</script>
+
+<style scoped>
+h2,h6 {
+  display: inline;
+}
+.dangerLight {
+  color: rgb(242, 19, 93,0.75)
+}
+</style>
