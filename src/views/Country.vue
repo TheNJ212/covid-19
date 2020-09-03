@@ -1,13 +1,14 @@
 <template>
 <div class="country">
-  <vs-row vs-justify="center">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" style="padding:0 8px">
-     <vs-card>
-        <h1>{{stats.country}}</h1>
-      <img :src="stats.countryInfo.flag" :alt="stats.country">
-     </vs-card>
-           </vs-col>
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+         <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+          <div style="display: flex; align-items: left;" class="pb-5">
+            <h1 style="display: inline-block;" class="pr-5">{{stats.country}}</h1>
+            <img :src="stats.countryInfo.flag" style="display: inline-block; " class="px-2" v-if="stats.countryInfo.flag">
+          </div>
+            </vs-col>
     </vs-row>
+
     <vs-row vs-justify="center">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
@@ -90,13 +91,18 @@
         </vs-row>
       </vs-col>
     </vs-row>
+    <Grafik :podaci='stats.country' v-if="statsPerDay.timeline"></Grafik>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Grafik from '@/components/Grafik.vue'
 
 export default {
+  components: {
+    Grafik
+  },
   data: function () {
     return {
       stats: {},
@@ -129,7 +135,7 @@ export default {
       return (this.stats.recovered / this.stats.cases * 100).toFixed(2)
     },
     todayDeathsPerc: function () {
-      return (this.stats.todayDeaths / this.stats.deaths * 100).toFixed(2)
+      return (this.stats.todayDeaths / (this.stats.deaths > 0 ? this.stats.deaths : 1) * 100).toFixed(2)
     },
     todayActivePerc: function () {
       return (this.stats.todayCases / this.stats.cases * 100).toFixed(2)
@@ -150,5 +156,11 @@ h2,h6 {
 }
 .dangerLight {
   color: rgb(242, 19, 93,0.75)
+}
+</style>
+
+<style>
+g[aria-labelledby="id-66-title"]{
+  display:none;
 }
 </style>

@@ -11,8 +11,8 @@
       class="myNavbar"
       style="box-shadow: none;">
       <div slot="title">
-        <vs-navbar-title>
-            Covid-19 tracker
+        <vs-navbar-title index="0">
+            <router-link to="/" class="titleLink">Covid-19 tracker</router-link>
         </vs-navbar-title>
       </div>
 
@@ -58,6 +58,10 @@ export default {
   background-color: rgb(255, 71, 87);
 }
 a:hover {
+  color: white;
+}
+.titleLink{
+  text-decoration: none;
   color: white;
 }
 </style>

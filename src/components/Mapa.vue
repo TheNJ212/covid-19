@@ -12,8 +12,6 @@
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-// var $ = require('jquery')
 const ECharts = require('echarts/dist/echarts-en.min.js')
 const axios = require('axios')
 
@@ -21,90 +19,113 @@ export default {
   name: 'Mapa',
   components: {
   },
+  data: function () {
+    return {
+      mapData: {},
+      countriesData: {}
+    }
+  },
   computed: {
-    countriesData: function () {
-      const podaci = this.$parent.statsPerCountry
-      return podaci
+  },
+  created: function () {
+    axios.get('https://disease.sh/v3/covid-19/countries').then(resp => {
+      this.countriesData = resp.data
+    })
+  },
+  watch: {
+    countriesData: function (val, oldval) {
+      if (val !== oldval) {
+        var arr = [...this.countriesData]
+        var arr2 = arr.map(x => ({ name: x.country, value: x.cases }))
+        this.mapData = arr2
+      }
+    },
+    mapData: function (val, oldval) {
+      if (val !== oldval) {
+        this.prikaziMapu()
+      }
     }
   },
   mounted () {
-    var myChart = ECharts.init(document.getElementById('main'))
-    var myGeoJSONPath = 'custom.geo.json'
-    myChart.showLoading()
-    axios.get(myGeoJSONPath).then(world => {
-      myChart.hideLoading()
 
-      ECharts.registerMap('World', world.data)
-      const option = {
-        title: {
-          text: 'World Outbrake Covid-19',
-          subtext: 'Data from disease.sh',
-          // sublink: '/#/countries',
-          left: 'right'
-        },
-        tooltip: {
-          trigger: 'item',
-          showDelay: 0,
-          transitionDuration: 0.2,
-          formatter: function (params) {
-            var value = (params.value + '').split('.')
-            value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
-            return params.name + '<br/>' + 'Cases' + ': ' + value
-          }
-        },
-        visualMap: {
-          left: 'right',
-          min: 0,
-          max: 10000000,
-          inRange: {
-            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+  },
+  methods: {
+    prikaziMapu: function () {
+      var myGeoJSONPath = 'custom.geo.json'
+      var vm = this
+      var myChart = ECharts.init(document.getElementById('main'))
+      myChart.showLoading()
+      axios.get(myGeoJSONPath).then(world => {
+        myChart.hideLoading()
+        ECharts.registerMap('World', world.data)
+        var option = {
+          title: {
+            text: 'World Outbrake Covid-19',
+            subtext: 'Data from disease.sh',
+            // sublink: '/countries',
+            left: 'right'
           },
-          text: ['High', 'Low'],
-          calculable: true
-        },
-        toolbox: {
-          show: true,
-          // orient: 'vertical',
-          left: 'left',
-          top: 'top',
-          feature: {
-            // dataView: { readOnly: false },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        series: [
-          {
-            name: 'Count',
-            type: 'map',
-            roam: true,
-            map: 'World',
-            emphasis: {
-              label: {
-                show: true
-              }
+          tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            transitionDuration: 0.2,
+            formatter: function (params) {
+              var value = (params.value + '').split('.')
+              value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+              return params.name + '<br/>' + 'Cases' + ': ' + value
+            }
+          },
+          visualMap: {
+            left: 'right',
+            min: 0,
+            max: 700000,
+            inRange: {
+              color: ['#ffffbf', '#f6e5b0', '#eac49c', '#dda086', '#d28174', '#cb6f69', '#c55d5e', '#c04e55', '#ba3f4c', '#b42d41', '#af1e38', '#aa0f2f', '#a50026']// ['#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'], ['#ffffff', '#cd727e', '#b14149', '#ab323b', '#a21c26', '#9b0b16']
             },
-            data: [
-              { name: 'Serbia', value: 4822023 }
-            ]
-          }
-        ]
-      }
+            text: ['High', 'Low'],
+            calculable: true
+          },
+          toolbox: {
+            show: true,
+            // orient: 'vertical',
+            left: 'left',
+            top: 'top',
+            feature: {
+              // dataView: { readOnly: false },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          series: [
+            {
+              name: 'Count',
+              type: 'map',
+              roam: true,
+              map: 'World',
+              emphasis: {
+                label: {
+                  show: true
+                }
+              },
+              data: vm.mapData
+            }
+          ]
+        }
 
-      myChart.setOption(option)
-      window.onresize = function () {
-        myChart.resize()
-      }
-      // var vm = this
-      // myChart.on('click', function (params) {
-      //   alert(params.name.toLowerCase())
-      //   vm.$router.push('/countries/' + params.name)
-      // })
+        myChart.setOption(option)
+        window.onresize = function () {
+          myChart.resize()
+        }
+        myChart.on('click', function (params) {
+          vm.$router.push('/countries/' + params.name)
+        })
 
-      if (option && typeof option === 'object') {
-        myChart.setOption(option, true)
-      }
-    })
+        if (option && typeof option === 'object') {
+          myChart.setOption(option, true)
+        }
+      })
+    }
   }
 }
+
 </script>

@@ -72,22 +72,22 @@
                 </div>
               </template>
               <template v-slot:cell(active)="data">
-                  {{data.value | zarezi}}
+                  <div>{{data.value | zarezi}}</div>
               </template>
               <template v-slot:cell(todayCases)="data">
-                  {{data.value | zarezi}}
+                  <div>{{data.value | zarezi}}</div>
               </template>
               <template v-slot:cell(cases)="data">
-                  {{data.value | zarezi}}
+                  <div>{{data.value | zarezi}}</div>
               </template>
               <template v-slot:cell(todayDeaths)="data">
-                  {{data.value | zarezi}}
+                  <div>{{data.value | zarezi}}</div>
               </template>
               <template v-slot:cell(deaths)="data">
-                  {{data.value | zarezi}}
+                 <div>{{data.value | zarezi}}</div>
               </template>
               <template v-slot:cell(recovered)="data">
-                  {{data.value | zarezi}}
+                  <div>{{data.value | zarezi}}</div>
               </template>
             </b-table>
           </div>
