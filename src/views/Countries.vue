@@ -52,7 +52,7 @@
               hover
               :items="items"
               :fields="fields"
-              :head-variant="headVariant"
+              :head-variant="'light'"
               :bordered="true"
               :filter="filter"
               :busy="isBusy"
@@ -180,7 +180,7 @@ export default {
 </script>
 
 <style scoped>
-img {
+td img {
   max-height: 14px;
 }
 </style>

@@ -18,6 +18,7 @@ import * as am4charts from '@amcharts/amcharts4/charts'
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated'
 import axios from 'axios'
 am4core.useTheme(am4themesAnimated)
+var chart = {}
 
 export default {
   name: 'Grafik',
@@ -39,7 +40,7 @@ export default {
   methods: {
     crtajGrafik: function () {
       var vm = this
-      const chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart)
+      chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart)
 
       chart.colors.step = 4
       chart.legend = new am4charts.Legend()
@@ -123,8 +124,8 @@ export default {
   },
 
   beforeDestroy () {
-    if (this.chart) {
-      this.chart.dispose()
+    if (chart) {
+      chart.dispose()
     }
   },
   watch: {

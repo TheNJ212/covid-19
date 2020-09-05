@@ -154,13 +154,14 @@ export default {
 h2,h6 {
   display: inline;
 }
-.dangerLight {
-  color: rgb(242, 19, 93,0.75)
-}
 </style>
 
 <style>
 g[aria-labelledby="id-66-title"]{
   display:none;
+}
+
+.dangerLight {
+  color: rgb(242, 19, 93,0.75)
 }
 </style>

@@ -36,7 +36,7 @@ export default {
     countriesData: function (val, oldval) {
       if (val !== oldval) {
         var arr = [...this.countriesData]
-        var arr2 = arr.map(x => ({ name: x.country, value: x.cases }))
+        var arr2 = arr.map(x => ({ name: x.country, value: x.cases, deaths: x.deaths, recovered: x.recovered }))
         this.mapData = arr2
       }
     },
@@ -60,7 +60,7 @@ export default {
         ECharts.registerMap('World', world.data)
         var option = {
           title: {
-            text: 'World Outbrake Covid-19',
+            text: 'Covid-19 Outbrake',
             subtext: 'Data from disease.sh',
             // sublink: '/countries',
             left: 'right'
@@ -70,9 +70,8 @@ export default {
             showDelay: 0,
             transitionDuration: 0.2,
             formatter: function (params) {
-              var value = (params.value + '').split('.')
-              value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
-              return params.name + '<br/>' + 'Cases' + ': ' + value
+              var comaMaker = x => (x + '').replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+              return params.name + '<div style="text-align: left;">' + 'Cases' + ': ' + comaMaker(params.data.value) + '<br/>Deaths: ' + comaMaker(params.data.deaths) + '<br/> Recovered: ' + comaMaker(params.data.recovered) + '</div>'
             }
           },
           visualMap: {
