@@ -52,8 +52,12 @@
     </vs-row>
     <Mapa></Mapa>
     <GrafikGlobal></GrafikGlobal>
-     <vs-row vs-justify="center" style="my-3">
+     <vs-row vs-justify="center" class="mt-4">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <div class="" style="padding:0 8px">
+            <h4 class="levo">Today's Stats</h4>
+            <p class="levo">Live statistics on new confirmed cases and new deaths.</p>
+        </div>
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -84,12 +88,10 @@
         </vs-row>
       </vs-col>
     </vs-row>
-    <vs-row vs-justify="center" class="my-3">
+    <vs-row vs-justify="center" class="mb-5">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
-            <h4 class="levo">Top countries with most coronavirus cases</h4>
-            <p class="levo">Countries with most confirmed cases in numbers and percentage.</p>
             <b-table
               hover
               :items="items"
@@ -117,8 +119,6 @@
             </b-table>
           </vs-col>
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
-            <h4 class="levo">Top countries with most deaths</h4>
-            <p class="levo">Countries with largest death toll and their fatality rate.</p>
             <b-table
               hover
               :items="items"
@@ -148,6 +148,134 @@
         </vs-row>
       </vs-col>
     </vs-row>
+    <vs-row vs-justify="center" class="mb-5">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <h4 class="levo">Top countries with most coronavirus cases</h4>
+            <p class="levo">Countries with most confirmed cases in numbers and percentage.</p>
+            <b-table
+              hover
+              :items="items"
+              :fields="tabela3.fields"
+              :head-variant="'dark'"
+              :bordered="true"
+              :sort-by.sync="sortBy3"
+              :sort-desc.sync="sortDesc"
+              :per-page="perPage"
+            >
+              <template v-slot:cell(country)="data">
+                <div>
+                  <router-link :to="`/countries/${data.value}`">
+                  <img :src="data.item.countryInfo.flag" />
+                  <span> {{ data.item.country }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template v-slot:cell(cases)="data">
+                {{data.item.cases | zarezi}}
+              </template>
+              <template v-slot:cell(percentage)="data">
+                {{(data.item.cases / $parent.globalStats.cases *100).toFixed(2)}}%
+              </template>
+            </b-table>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <h4 class="levo">Top countries with most deaths</h4>
+            <p class="levo">Countries with largest death toll and their fatality rate.</p>
+            <b-table
+              hover
+              :items="items"
+              :fields="tabela4.fields"
+              :head-variant="'dark'"
+              :bordered="true"
+              :sort-by.sync="sortBy4"
+              :sort-desc.sync="sortDesc"
+              :per-page="perPage"
+            >
+              <template v-slot:cell(country)="data">
+                <div>
+                  <router-link :to="`/countries/${data.value}`">
+                  <img :src="data.item.countryInfo.flag" />
+                  <span> {{ data.item.country }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template v-slot:cell(deaths)="data">
+                {{data.item.deaths | zarezi}}
+              </template>
+              <template v-slot:cell(percentage)="data">
+                {{(data.item.deaths / data.item.cases *100).toFixed(2)}}%
+              </template>
+            </b-table>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
+    <vs-row vs-justify="center" class="mb-5">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <h4 class="levo">Top countries with most active cases</h4>
+            <p class="levo">Countries with largest infected number of people and their percentage.</p>
+            <b-table
+              hover
+              :items="items"
+              :fields="tabela5.fields"
+              :head-variant="'light'"
+              :bordered="true"
+              :sort-by.sync="sortBy5"
+              :sort-desc.sync="sortDesc"
+              :per-page="perPage"
+            >
+              <template v-slot:cell(country)="data">
+                <div>
+                  <router-link :to="`/countries/${data.value}`">
+                  <img :src="data.item.countryInfo.flag" />
+                  <span> {{ data.item.country }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template v-slot:cell(active)="data">
+                {{data.item.active | zarezi}}
+              </template>
+              <template v-slot:cell(percentage)="data">
+                {{(data.item.active / data.item.cases *100).toFixed(2)}}%
+              </template>
+            </b-table>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <h4 class="levo">Top countries with most recovered people</h4>
+            <p class="levo">Countries with highest rate of recoveries.</p>
+            <b-table
+              hover
+              :items="items"
+              :fields="tabela6.fields"
+              :head-variant="'light'"
+              :bordered="true"
+              :sort-by.sync="sortBy6"
+              :sort-desc.sync="sortDesc"
+              :per-page="perPage"
+            >
+              <template v-slot:cell(country)="data">
+                <div>
+                  <router-link :to="`/countries/${data.value}`">
+                  <img :src="data.item.countryInfo.flag" />
+                  <span> {{ data.item.country }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <template v-slot:cell(recovered)="data">
+                {{data.item.recovered | zarezi}}
+              </template>
+              <template v-slot:cell(percentage)="data">
+                {{(data.item.recovered / data.item.cases *100).toFixed(2)}}%
+              </template>
+            </b-table>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
   </div>
 </template>
 
@@ -169,6 +297,10 @@ export default {
     return {
       sortBy1: 'todayCases',
       sortBy2: 'todayDeaths',
+      sortBy3: 'cases',
+      sortBy4: 'deaths',
+      sortBy5: 'active',
+      sortBy6: 'recovered',
       sortDesc: true,
       perPage: 10,
       tabela1: {
@@ -205,6 +337,82 @@ export default {
           {
             key: 'percentage',
             label: '% Increase',
+            tdClass: 'desno'
+          }
+        ]
+      },
+      tabela3: {
+        fields: [
+          {
+            key: 'country',
+            label: 'Country/Territory',
+            tdClass: 'levo'
+          },
+          {
+            key: 'cases',
+            label: 'Total Cases',
+            tdClass: 'desno'
+          },
+          {
+            key: 'percentage',
+            label: 'Worldwide',
+            tdClass: 'desno'
+          }
+        ]
+      },
+      tabela4: {
+        fields: [
+          {
+            key: 'country',
+            label: 'Country/Territory',
+            tdClass: 'levo'
+          },
+          {
+            key: 'deaths',
+            label: 'Total Deaths',
+            tdClass: 'desno'
+          },
+          {
+            key: 'percentage',
+            label: 'Fatality Rate',
+            tdClass: 'desno'
+          }
+        ]
+      },
+      tabela5: {
+        fields: [
+          {
+            key: 'country',
+            label: 'Country/Territory',
+            tdClass: 'levo'
+          },
+          {
+            key: 'active',
+            label: 'Active Cases',
+            tdClass: 'desno'
+          },
+          {
+            key: 'percentage',
+            label: '%',
+            tdClass: 'desno'
+          }
+        ]
+      },
+      tabela6: {
+        fields: [
+          {
+            key: 'country',
+            label: 'Country/Territory',
+            tdClass: 'levo'
+          },
+          {
+            key: 'recovered',
+            label: 'Recovered',
+            tdClass: 'desno'
+          },
+          {
+            key: 'percentage',
+            label: '%',
             tdClass: 'desno'
           }
         ]
