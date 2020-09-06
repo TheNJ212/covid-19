@@ -71,6 +71,7 @@ export default {
             transitionDuration: 0.2,
             formatter: function (params) {
               var comaMaker = x => (x + '').replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+              if (isNaN(params.value)) { return params.name + '<br/>No data' }
               return params.name + '<div style="text-align: left;">' + 'Cases' + ': ' + comaMaker(params.data.value) + '<br/>Deaths: ' + comaMaker(params.data.deaths) + '<br/> Recovered: ' + comaMaker(params.data.recovered) + '</div>'
             }
           },

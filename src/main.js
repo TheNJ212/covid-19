@@ -8,6 +8,8 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import HighchartsVue from 'highcharts-vue'
+import Highcharts3d from 'highcharts/highcharts-3d'
+import Highcharts from 'highcharts'
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)
@@ -18,6 +20,7 @@ Vue.config.productionTip = false
 
 Vue.use(Vuesax)
 
+Highcharts3d(Highcharts)
 Vue.use(HighchartsVue)
 
 new Vue({

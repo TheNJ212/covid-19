@@ -25,18 +25,30 @@
       <vs-navbar-item index="2">
          <a href="#"><router-link to="/countries">Countries</router-link></a>
       </vs-navbar-item>
+            <vs-navbar-item index="3">
+         <a href="#"><router-link to="/vaccine">Vaccine</router-link></a>
+      </vs-navbar-item>
     </vs-navbar>
     </vs-col></vs-row>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'Navigacija',
   data: () => ({
     colorx: 'rgb(255, 71, 87)',
     indexActive: 0
-  })
+  }),
+  mounted: function () {
+    this.indexActive = this.$router.history.current.meta.indexActive
+  },
+  watch: {
+    $route: function (val, oldval) {
+      this.indexActive = this.$router.history.current.meta.indexActive
+    }
+  }
 }
 </script>
 

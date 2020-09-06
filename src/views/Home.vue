@@ -556,9 +556,9 @@ export default {
       var recoveredDaily = []
       var activeDaily = []
       for (var i = 0; i < arr1.length - 1; i++) {
-        casesDaily.push(arr1[i + 1] - arr1[i])
-        deathsDaily.push(arr2[i + 1] - arr2[i])
-        recoveredDaily.push(arr3[i + 1] - arr3[i])
+        casesDaily.push((arr1[i + 1] - arr1[i]) < 0 ? 0 : (arr1[i + 1] - arr1[i]))
+        deathsDaily.push((arr2[i + 1] - arr2[i]) < 0 ? 0 : (arr2[i + 1] - arr2[i]))
+        recoveredDaily.push((arr3[i + 1] - arr3[i]) < 0 ? 0 : (arr3[i + 1] - arr3[i]))
         activeDaily.push((casesDaily[i] - deathsDaily[i] - recoveredDaily[i]) < 0 ? 0 : (casesDaily[i] - deathsDaily[i] - recoveredDaily[i]))
       }
       this.chartOptions1.series[0].data = casesDaily

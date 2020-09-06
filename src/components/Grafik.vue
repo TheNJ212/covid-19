@@ -33,8 +33,6 @@ export default {
   created: function () {
     axios.get('https://disease.sh/v3/covid-19/historical/' + this.$props.podaci + '?lastdays=all').then(resp => {
       this.worldStatsDaily = resp.data.timeline
-    }).catch(function (error) {
-      console.log(error)
     })
   },
   methods: {

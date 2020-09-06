@@ -2,9 +2,9 @@
 <div class="country">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
-          <div style="display: flex; align-items: left;" class="pb-5">
-            <h1 style="display: inline-block;" class="pr-5">{{stats.country}}</h1>
-              <img :src="flag" style="display: inline-block; " class="px-2" >
+          <div style="display: flex; align-items: center; justify-content: flex-start " class="pb-5">
+            <h1 style="display: inline-block;" class="pr-3">{{stats.country}}</h1>
+              <img :src="flag" style="display: inline-block; " class="px-2 flag" >
           </div>
             </vs-col>
     </vs-row>
@@ -92,7 +92,24 @@
       </vs-col>
     </vs-row>
     <Grafik :podaci='stats.country' v-if="statsPerDay.timeline"></Grafik>
-    <vs-row vs-justify="center" class="mb-5">
+    <vs-row vs-justify="center" class="mb-1">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptionsPie1" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptionsPie2" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
+    <div v-if="statsPerDay">
+    <vs-row vs-justify="center" class="mb-1">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
@@ -108,7 +125,7 @@
         </vs-row>
       </vs-col>
     </vs-row>
-        <vs-row vs-justify="center" class="mb-5">
+    <vs-row vs-justify="center" class="mb-5">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
@@ -124,6 +141,7 @@
         </vs-row>
       </vs-col>
     </vs-row>
+    </div>
 </div>
 </template>
 
@@ -139,14 +157,14 @@ export default {
     return {
       flag: '/',
       stats: {},
-      statsPerDay: {},
+      statsPerDay: false,
       updateArgs: [true, true, { duration: 1000 }],
       chartOptions1: {
         chart: {
           type: 'column'
         },
         title: {
-          text: 'Worldwide Daily New Cases'
+          text: 'Daily New Cases'
         },
         xAxis: {
           categories: []
@@ -161,7 +179,7 @@ export default {
           type: 'column'
         },
         title: {
-          text: 'Worldwide Daily Deaths'
+          text: 'Daily Deaths'
         },
         xAxis: {
           categories: []
@@ -177,7 +195,7 @@ export default {
           type: 'column'
         },
         title: {
-          text: 'Worldwide Daily Active Cases'
+          text: 'Daily Active Cases'
         },
         xAxis: {
           categories: []
@@ -193,7 +211,7 @@ export default {
           type: 'column'
         },
         title: {
-          text: 'Worldwide Daily Recovered'
+          text: 'Daily Recovered'
         },
         xAxis: {
           categories: []
@@ -203,6 +221,77 @@ export default {
           data: [],
           color: '#6fcd98'
         }]
+      },
+      chartOptionsPie1: {
+        chart: {
+          type: 'pie',
+          options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+          }
+        },
+        title: {
+          text: 'Comfirmed Cases Comparison'
+        },
+        tooltip: {
+          pointFormat: '{series.name}: {point.y}<br>Percentage: {point.percentage:.2f} %'
+        },
+        subtitle: {
+          text: 'Active cases vs deaths vs recoveries'
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 45,
+            colors: ['#ffc107', '#dc3545', '#6fcd98'],
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true
+          }
+        },
+        series: [{
+          type: 'pie',
+          name: 'Cases',
+          data: []
+        }]
+      },
+      chartOptionsPie2: {
+        chart: {
+          type: 'pie',
+          options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+          }
+        },
+        title: {
+          text: 'Comfirmed Cases Compared to Worldwide Cases'
+        },
+        tooltip: {
+          pointFormat: '{series.name}: {point.y}<br>Percentage: {point.percentage:.2f} %'
+        },
+        subtitle: {
+          text: ''
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 45,
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true
+          }
+        },
+        series: [{
+          type: 'pie',
+          name: 'Cases',
+          data: []
+        }]
       }
     }
   },
@@ -211,6 +300,11 @@ export default {
     axios.get('https://disease.sh/v3/covid-19/countries/' + this.$route.params.country).then(resp => {
       this.stats = resp.data
       this.flag = resp.data.countryInfo.flag
+      this.chartOptionsPie1.series[0].data = [{ name: 'Active', y: resp.data.active }, ['Deaths', resp.data.deaths], ['Recovered', resp.data.recovered]]
+      axios.get('https://disease.sh/v3/covid-19/all').then(res => {
+        this.chartOptionsPie2.series[0].data = [[resp.data.country, resp.data.cases], ['Other Countries', res.data.cases - resp.data.cases]]
+      })
+      this.chartOptionsPie2.subtitle.text = resp.data.country + ' confirmed cases vs Worldwide confirmed cases'
     }).catch(function (error) {
       if (error !== undefined) {
         vm.$router.push('/404')
@@ -228,9 +322,9 @@ export default {
       var recoveredDaily = []
       var activeDaily = []
       for (var i = 0; i < arr1.length - 1; i++) {
-        casesDaily.push(arr1[i + 1] - arr1[i])
-        deathsDaily.push(arr2[i + 1] - arr2[i])
-        recoveredDaily.push(arr3[i + 1] - arr3[i])
+        casesDaily.push((arr1[i + 1] - arr1[i]) < 0 ? 0 : (arr1[i + 1] - arr1[i]))
+        deathsDaily.push((arr2[i + 1] - arr2[i]) < 0 ? 0 : (arr2[i + 1] - arr2[i]))
+        recoveredDaily.push((arr3[i + 1] - arr3[i]) < 0 ? 0 : (arr3[i + 1] - arr3[i]))
         activeDaily.push((casesDaily[i] - deathsDaily[i] - recoveredDaily[i]) < 0 ? 0 : (casesDaily[i] - deathsDaily[i] - recoveredDaily[i]))
       }
       this.chartOptions1.series[0].data = casesDaily
@@ -282,5 +376,8 @@ g[aria-labelledby="id-66-title"]{
 
 .dangerLight {
   color: rgb(242, 19, 93,0.75)
+}
+.flag {
+  max-height: 2.7em;
 }
 </style>

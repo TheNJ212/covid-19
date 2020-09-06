@@ -104,7 +104,6 @@ export default {
   data: function () {
     return {
       isBusy: true,
-      headVariant: 'light',
       fields: [
         {
           key: 'country',
