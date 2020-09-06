@@ -1,5 +1,5 @@
 <template>
-<div class="country">
+<div class="country" v-if="flag!=='/'">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
           <div style="display: flex; align-items: center; justify-content: flex-start " class="pb-5">
