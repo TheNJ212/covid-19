@@ -561,11 +561,6 @@ export default {
         recoveredDaily.push(arr3[i + 1] - arr3[i])
         activeDaily.push((casesDaily[i] - deathsDaily[i] - recoveredDaily[i]) < 0 ? 0 : (casesDaily[i] - deathsDaily[i] - recoveredDaily[i]))
       }
-      console.log(casesDaily)
-      console.log(deathsDaily)
-      console.log(recoveredDaily)
-      console.log(activeDaily)
-      console.log(datumi)
       this.chartOptions1.series[0].data = casesDaily
       this.chartOptions2.series[0].data = deathsDaily
       this.chartOptions3.series[0].data = activeDaily

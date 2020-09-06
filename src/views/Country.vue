@@ -4,7 +4,7 @@
          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
           <div style="display: flex; align-items: left;" class="pb-5">
             <h1 style="display: inline-block;" class="pr-5">{{stats.country}}</h1>
-            <img :src="stats.countryInfo.flag" style="display: inline-block; " class="px-2" v-if="stats.countryInfo.flag">
+              <img :src="flag" style="display: inline-block; " class="px-2" >
           </div>
             </vs-col>
     </vs-row>
@@ -108,6 +108,22 @@
         </vs-row>
       </vs-col>
     </vs-row>
+        <vs-row vs-justify="center" class="mb-5">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions3" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions4" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
 </div>
 </template>
 
@@ -121,33 +137,71 @@ export default {
   },
   data: function () {
     return {
+      flag: '/',
       stats: {},
       statsPerDay: {},
       updateArgs: [true, true, { duration: 1000 }],
       chartOptions1: {
         chart: {
-          type: 'pie'
+          type: 'column'
         },
         title: {
-          text: 'Comfirmed Cases Comparison'
+          text: 'Worldwide Daily New Cases'
+        },
+        xAxis: {
+          categories: []
         },
         series: [{
           name: 'Cases',
-          data: [{ y: 4132, name: 'Active' }, { y: 5213, name: 'Deaths' }, { y: 2345, name: 'Recovered' }] // sample data
+          data: []
         }]
       },
       chartOptions2: {
         chart: {
-          polar: true,
-          inverted: true
+          type: 'column'
         },
         title: {
-          text: 'Comfirmed Cases Compared to Worldwide Cases'
+          text: 'Worldwide Daily Deaths'
+        },
+        xAxis: {
+          categories: []
         },
         series: [{
-          type: 'bar',
-          name: 'Cases',
-          data: [{ y: 4132, name: 'Active' }, { y: 5213, name: 'Deaths' }, { y: 2345, name: 'Recovered' }] // sample data
+          name: 'Deaths',
+          data: [],
+          color: '#dc3545'
+        }]
+      },
+      chartOptions3: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Worldwide Daily Active Cases'
+        },
+        xAxis: {
+          categories: []
+        },
+        series: [{
+          name: 'Active',
+          data: [],
+          color: '#ffc107'
+        }]
+      },
+      chartOptions4: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Worldwide Daily Recovered'
+        },
+        xAxis: {
+          categories: []
+        },
+        series: [{
+          name: 'Recovered',
+          data: [],
+          color: '#6fcd98'
         }]
       }
     }
@@ -156,7 +210,7 @@ export default {
     var vm = this
     axios.get('https://disease.sh/v3/covid-19/countries/' + this.$route.params.country).then(resp => {
       this.stats = resp.data
-      console.log(resp.data)
+      this.flag = resp.data.countryInfo.flag
     }).catch(function (error) {
       if (error !== undefined) {
         vm.$router.push('/404')
@@ -164,7 +218,29 @@ export default {
     })
     axios.get('https://disease.sh/v3/covid-19/historical/' + this.$route.params.country + '?lastdays=all').then(resp => {
       this.statsPerDay = resp.data
-      console.log(resp.data)
+      var niz = resp.data.timeline
+      var arr1 = Object.values(niz.cases)
+      var arr2 = Object.values(niz.deaths)
+      var arr3 = Object.values(niz.recovered)
+      var datumi = Object.keys(niz.cases).slice(0, -1)
+      var casesDaily = []
+      var deathsDaily = []
+      var recoveredDaily = []
+      var activeDaily = []
+      for (var i = 0; i < arr1.length - 1; i++) {
+        casesDaily.push(arr1[i + 1] - arr1[i])
+        deathsDaily.push(arr2[i + 1] - arr2[i])
+        recoveredDaily.push(arr3[i + 1] - arr3[i])
+        activeDaily.push((casesDaily[i] - deathsDaily[i] - recoveredDaily[i]) < 0 ? 0 : (casesDaily[i] - deathsDaily[i] - recoveredDaily[i]))
+      }
+      this.chartOptions1.series[0].data = casesDaily
+      this.chartOptions2.series[0].data = deathsDaily
+      this.chartOptions3.series[0].data = activeDaily
+      this.chartOptions4.series[0].data = recoveredDaily
+      this.chartOptions1.xAxis.categories = datumi
+      this.chartOptions2.xAxis.categories = datumi
+      this.chartOptions3.xAxis.categories = datumi
+      this.chartOptions4.xAxis.categories = datumi
     })
   },
   computed: {
