@@ -92,6 +92,22 @@
       </vs-col>
     </vs-row>
     <Grafik :podaci='stats.country' v-if="statsPerDay.timeline"></Grafik>
+    <vs-row vs-justify="center" class="mb-5">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions1" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions2" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
 </div>
 </template>
 
@@ -106,7 +122,34 @@ export default {
   data: function () {
     return {
       stats: {},
-      statsPerDay: {}
+      statsPerDay: {},
+      updateArgs: [true, true, { duration: 1000 }],
+      chartOptions1: {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: 'Comfirmed Cases Comparison'
+        },
+        series: [{
+          name: 'Cases',
+          data: [{ y: 4132, name: 'Active' }, { y: 5213, name: 'Deaths' }, { y: 2345, name: 'Recovered' }] // sample data
+        }]
+      },
+      chartOptions2: {
+        chart: {
+          polar: true,
+          inverted: true
+        },
+        title: {
+          text: 'Comfirmed Cases Compared to Worldwide Cases'
+        },
+        series: [{
+          type: 'bar',
+          name: 'Cases',
+          data: [{ y: 4132, name: 'Active' }, { y: 5213, name: 'Deaths' }, { y: 2345, name: 'Recovered' }] // sample data
+        }]
+      }
     }
   },
   created: function () {

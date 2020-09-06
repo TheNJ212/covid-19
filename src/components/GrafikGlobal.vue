@@ -3,9 +3,10 @@
     <vs-row vs-justify="center">
   <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12" vs-sm="10" style="padding:0 8px">
     <vs-card>
-    <div id="graph"  style="width: 100%; height: 500px; margin: 0 auto; background-color: #FFF; padding:0 8px ">
-        <div ref="chartdiv" style="width: 100%; height:100%"></div>
-    </div>
+      <h4>Covid - 19 Global Statistics Daily</h4>
+      <div id="graph"  style="width: 100%; height: 500px; margin: 0 auto; background-color: #FFF; padding:0 8px ">
+          <div ref="chartdiv" style="width: 100%; height:100%"></div>
+      </div>
     </vs-card>
         </vs-col>
 </vs-row>

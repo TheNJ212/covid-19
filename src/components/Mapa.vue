@@ -60,7 +60,7 @@ export default {
         ECharts.registerMap('World', world.data)
         var option = {
           title: {
-            text: 'Covid-19 Outbrake',
+            text: 'Covid-19 Outbrake World Map',
             subtext: 'Data from disease.sh',
             // sublink: '/countries',
             left: 'right'

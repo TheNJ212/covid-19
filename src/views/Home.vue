@@ -88,7 +88,7 @@
         </vs-row>
       </vs-col>
     </vs-row>
-    <vs-row vs-justify="center" class="mb-5">
+    <vs-row vs-justify="center" class="mb-2">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
@@ -148,6 +148,24 @@
         </vs-row>
       </vs-col>
     </vs-row>
+
+    <vs-row vs-justify="center" class="mb-5">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions1" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions2" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
+
     <vs-row vs-justify="center" class="mb-5">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
@@ -212,7 +230,7 @@
         </vs-row>
       </vs-col>
     </vs-row>
-    <vs-row vs-justify="center" class="mb-5">
+    <vs-row vs-justify="center" class="mb-2">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
@@ -272,6 +290,22 @@
                 {{(data.item.recovered / data.item.cases *100).toFixed(2)}}%
               </template>
             </b-table>
+          </vs-col>
+        </vs-row>
+      </vs-col>
+    </vs-row>
+    <vs-row vs-justify="center" class="mb-5">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <vs-row vs-align="center" vs-justify="center" vs-type="flex">
+          <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions3" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
+          </vs-col>
+          <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6" style="padding:0 8px" vs-sm="12">
+            <vs-card>
+           <highcharts :options="chartOptions4" :updateArgs="updateArgs"></highcharts>
+           </vs-card>
           </vs-col>
         </vs-row>
       </vs-col>
@@ -417,7 +451,71 @@ export default {
           }
         ]
       },
-      items: {}
+      items: [],
+      updateArgs: [true, true, { duration: 1000 }],
+      chartOptions1: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Worldwide Daily New Cases'
+        },
+        xAxis: {
+          categories: []
+        },
+        series: [{
+          name: 'Cases',
+          data: []
+        }]
+      },
+      chartOptions2: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Worldwide Daily Deaths'
+        },
+        xAxis: {
+          categories: []
+        },
+        series: [{
+          name: 'Deaths',
+          data: [],
+          color: '#dc3545'
+        }]
+      },
+      chartOptions3: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Worldwide Daily Active Cases'
+        },
+        xAxis: {
+          categories: []
+        },
+        series: [{
+          name: 'Active',
+          data: [],
+          color: '#ffc107'
+        }]
+      },
+      chartOptions4: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Worldwide Daily Recovered'
+        },
+        xAxis: {
+          categories: []
+        },
+        series: [{
+          name: 'Recovered',
+          data: [],
+          color: '#6fcd98'
+        }]
+      }
     }
   },
   computed: {
@@ -443,24 +541,40 @@ export default {
       return value.replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
     }
   },
-  watch: {
-    items: function (val, oldval) {
-      if (val !== oldval) {
-        console.log(val)
-        console.log(oldval)
-        this.toggleBusy()
-      }
-    }
-  },
   created () {
     axios.get('https://disease.sh/v3/covid-19/countries').then(resp => {
       this.items = resp.data
     })
-  },
-  methods: {
-    toggleBusy () {
-      this.isBusy = !this.isBusy
-    }
+    axios.get('https://disease.sh/v3/covid-19/historical/all?lastdays=all').then(resp => {
+      var niz = resp.data
+      var arr1 = Object.values(niz.cases)
+      var arr2 = Object.values(niz.deaths)
+      var arr3 = Object.values(niz.recovered)
+      var datumi = Object.keys(niz.cases).slice(0, -1)
+      var casesDaily = []
+      var deathsDaily = []
+      var recoveredDaily = []
+      var activeDaily = []
+      for (var i = 0; i < arr1.length - 1; i++) {
+        casesDaily.push(arr1[i + 1] - arr1[i])
+        deathsDaily.push(arr2[i + 1] - arr2[i])
+        recoveredDaily.push(arr3[i + 1] - arr3[i])
+        activeDaily.push((casesDaily[i] - deathsDaily[i] - recoveredDaily[i]) < 0 ? 0 : (casesDaily[i] - deathsDaily[i] - recoveredDaily[i]))
+      }
+      console.log(casesDaily)
+      console.log(deathsDaily)
+      console.log(recoveredDaily)
+      console.log(activeDaily)
+      console.log(datumi)
+      this.chartOptions1.series[0].data = casesDaily
+      this.chartOptions2.series[0].data = deathsDaily
+      this.chartOptions3.series[0].data = activeDaily
+      this.chartOptions4.series[0].data = recoveredDaily
+      this.chartOptions1.xAxis.categories = datumi
+      this.chartOptions2.xAxis.categories = datumi
+      this.chartOptions3.xAxis.categories = datumi
+      this.chartOptions4.xAxis.categories = datumi
+    })
   }
 }
 </script>
@@ -472,5 +586,11 @@ h2,h6 {
 
 td img {
   max-height: 14px;
+}
+</style>
+
+<style>
+.highcharts-credits{
+  display: none;
 }
 </style>
