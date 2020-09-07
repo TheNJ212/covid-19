@@ -547,10 +547,10 @@ export default {
     })
     axios.get('https://disease.sh/v3/covid-19/historical/all?lastdays=all').then(resp => {
       var niz = resp.data
-      var arr1 = Object.values(niz.cases)
-      var arr2 = Object.values(niz.deaths)
-      var arr3 = Object.values(niz.recovered)
-      var datumi = Object.keys(niz.cases).slice(0, -1)
+      var arr1 = [0].concat(Object.values(niz.cases))
+      var arr2 = [0].concat(Object.values(niz.deaths))
+      var arr3 = [0].concat(Object.values(niz.recovered))
+      var datumi = Object.keys(niz.cases)
       var casesDaily = []
       var deathsDaily = []
       var recoveredDaily = []
