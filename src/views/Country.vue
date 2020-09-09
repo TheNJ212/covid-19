@@ -1,8 +1,8 @@
 <template>
 <div class="country" v-if="flag!=='/'">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
-         <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
-          <div style="display: flex; align-items: center; justify-content: flex-start " class="pb-5">
+         <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="10">
+          <div style="display: flex; align-items: center; justify-content: flex-start word-break: break-all" class="pb-5">
             <h1 style="display: inline-block;" class="pr-3">{{stats.country}}</h1>
               <img :src="flag" style="display: inline-block; " class="px-2 flag" >
           </div>
@@ -10,7 +10,7 @@
     </vs-row>
 
     <vs-row vs-justify="center">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="10">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -60,7 +60,7 @@
       </vs-col>
     </vs-row>
     <vs-row vs-justify="center" style="my-3">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="10">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -93,7 +93,7 @@
     </vs-row>
     <Grafik :podaci='stats.country' v-if="statsPerDay.timeline"></Grafik>
     <vs-row vs-justify="center" class="mb-1">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -110,7 +110,7 @@
     </vs-row>
     <div v-if="statsPerDay">
     <vs-row vs-justify="center" class="mb-1">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -126,7 +126,7 @@
       </vs-col>
     </vs-row>
     <vs-row vs-justify="center" class="mb-5">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>

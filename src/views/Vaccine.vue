@@ -11,6 +11,7 @@
                     hover
                     :bordered="true"
                     :striped='true'
+                    responsive
                     >
                     <template v-slot:cell(index)="data">
                         {{ data.index + 1 }}

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <vs-row vs-justify="center">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="10">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="3"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -53,7 +53,7 @@
     <Mapa></Mapa>
     <GrafikGlobal></GrafikGlobal>
      <vs-row vs-justify="center" class="mt-4">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <div class="" style="padding:0 8px">
             <h4 class="levo">Today's Stats</h4>
             <p class="levo">Live statistics on new confirmed cases and new deaths.</p>
@@ -89,7 +89,7 @@
       </vs-col>
     </vs-row>
     <vs-row vs-justify="center" class="mb-2">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <b-table
@@ -101,6 +101,7 @@
               :sort-by.sync="sortBy1"
               :sort-desc.sync="sortDesc"
               :per-page="perPage"
+              responsive
             >
               <template v-slot:cell(country)="data">
                 <div>
@@ -128,6 +129,7 @@
               :sort-by.sync="sortBy2"
               :sort-desc.sync="sortDesc"
               :per-page="perPage"
+              responsive
             >
               <template v-slot:cell(country)="data">
                 <div>
@@ -150,7 +152,7 @@
     </vs-row>
 
     <vs-row vs-justify="center" class="mb-5">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>
@@ -167,7 +169,7 @@
     </vs-row>
 
     <vs-row vs-justify="center" class="mb-5">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <h4 class="levo">Top countries with most coronavirus cases</h4>
@@ -181,6 +183,7 @@
               :sort-by.sync="sortBy3"
               :sort-desc.sync="sortDesc"
               :per-page="perPage"
+              responsive
             >
               <template v-slot:cell(country)="data">
                 <div>
@@ -210,6 +213,7 @@
               :sort-by.sync="sortBy4"
               :sort-desc.sync="sortDesc"
               :per-page="perPage"
+              responsive
             >
               <template v-slot:cell(country)="data">
                 <div>
@@ -231,7 +235,7 @@
       </vs-col>
     </vs-row>
     <vs-row vs-justify="center" class="mb-2">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <h4 class="levo">Top countries with most active cases</h4>
@@ -274,6 +278,7 @@
               :sort-by.sync="sortBy6"
               :sort-desc.sync="sortDesc"
               :per-page="perPage"
+              responsive
             >
               <template v-slot:cell(country)="data">
                 <div>
@@ -295,7 +300,7 @@
       </vs-col>
     </vs-row>
     <vs-row vs-justify="center" class="mb-5">
-      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8" vs-xs="12">
         <vs-row vs-align="center" vs-justify="center" vs-type="flex">
           <vs-col type="flex" vs-justify="center" vs-align="left" vs-w="6"  style="padding:0 8px" vs-sm="12">
             <vs-card>

@@ -56,6 +56,7 @@
               :bordered="true"
               :filter="filter"
               :busy="isBusy"
+              responsive
             >
               <template v-slot:table-busy>
                 <div class="text-center text-danger my-2">
